@@ -5,62 +5,67 @@ https://drive.google.com/file/d/1cmNt85QsAxskrzp_u5o9S2Ql-8THaXSC/view?usp=shari
 
 # Code
 ```C
-#include<stdio.h>
-#define NAME_Char 20
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
-typedef struct stu{
+#define NAME_CHAR 20
+
+typedef struct {
     int roll;
-    char name[NAME_Char];
+    char name[NAME_CHAR];
     float marks;
-}stu;
+} Student;
 
-void input_student_details(stu student[], int *size);
-void check(stu student[], int size, stu *student2);
+void input_student_details(Student *students, int size);
+void check(Student *students, int size, int roll);
 
-int main(){
-    int MAX = 1;
-    printf("How many students data do you want to keep?\n= ");
-    scanf("%d",&MAX);
+int main() {
+    int size;
+    printf("How many students' data do you want to keep?\n= ");
+    scanf("%d", &size);
 
-    stu student[MAX];
-    input_student_details(student, &MAX);
-    
+    Student *students = (Student *)malloc(size * sizeof(Student));
+    if (!students) {
+        printf("Memory allocation failed\n");
+        return 1;
+    }
+
+    input_student_details(students, size);
     printf("\nAll student details are successfully saved {^_^}\n");
-    
-    stu student2;
+
+    int roll;
     printf("\nEnter roll number for search: ");
-    scanf("%d",&student2.roll);
-
-    check(student, MAX, &student2);
-
+    scanf("%d", &roll);
+    check(students, size, roll);
+    
+    free(students);
     return 0;
 }
-void input_student_details(stu student[], int *size){
-    for(int i = 0; i < *size; i++){
-        printf("Enter roll number of student - %d : ",i + 1);
-        scanf("%d", &student[i].roll);
+
+void input_student_details(Student *students, int size) {
+    for (int i = 0; i < size; i++) {
+        printf("Enter roll number of student - %d: ", i + 1);
+        scanf("%d", &students[i].roll);
         getchar();
 
-        printf("Enter name of student - %d : ",i + 1);
-        fgets(student[i].name, sizeof(student[i].name), stdin);
+        printf("Enter name of student - %d: ", i + 1);
+        fgets(students[i].name, NAME_CHAR, stdin);
+        students[i].name[strcspn(students[i].name, "\n")] = '\0';
 
-        printf("Enter student - %d marks: ", i + 1);
-        scanf("%f", &student[i].marks);
+        printf("Enter marks of student - %d: ", i + 1);
+        scanf("%f", &students[i].marks);
         getchar();
-        printf("\n");
     }
-    return;
 }
-void check(stu student[], int size, stu *student2){
-    for(int i = 0; i < size; i++){
-        if(student[i].roll == student2->roll){
-            printf("Name: %s",student[i].name);
-            printf("Roll: %d",student[i].roll);
-            printf("\nMarks: %.2f",student[i].marks);
+
+void check(Student *students, int size, int roll) {
+    for (int i = 0; i < size; i++) {
+        if (students[i].roll == roll) {
+            printf("Name: %s\nRoll: %d\nMarks: %.2f\n", students[i].name, students[i].roll, students[i].marks);
             return;
         }
     }
-    printf("This %d roll number is not found in the database",student2->roll);
-    return;
+    printf("Roll number %d not found in the database\n", roll);
 }
 ```
