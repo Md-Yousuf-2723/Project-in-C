@@ -69,3 +69,18 @@ void check(Student *students, int size, int roll) {
     printf("Roll number %d not found in the database\n", roll);
 }
 ```
+<p>
+This is a simple C project.
+
+In this project, user can give as much as student’s info to database. Then later it will be automatically saved.
+
+Then user can search a student’s detail’s by giving his / her roll number input
+
+The concept of C used to develop this projects are:
+
+- Structure
+- Dynamic Memory allocation
+- Function
+- Pointer
+- String
+</p>
